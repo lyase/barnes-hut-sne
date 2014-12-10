@@ -36,15 +36,14 @@ using namespace std;
 
 void _save_data(double* data, int n, int d)
 {
-
-     // Open file, write first 2 integers and then the data
+     // Open file, write first 2 integers number of records number of dim of each record and then the data
      FILE *h;
      if((h = fopen("data.dat", "w+b")) == NULL) {
           printf("Error: could not open data file.\n");
           return;
      }
-     fwrite(&n, sizeof(int), 1, h);
-     fwrite(&d, sizeof(int), 1, h);
+     fwrite(&n, sizeof(int), 1, h);//write number of records
+     fwrite(&d, sizeof(int), 1, h);// write number of dimmension
      fwrite(data, sizeof(double), n * d, h);
      fclose(h);
      printf("Wrote the %i x %i data matrix successfully!\n", n, d);
@@ -52,7 +51,7 @@ void _save_data(double* data, int n, int d)
 int main()
 {
      // Define some variables
-     int  N=5,  no_dims = 2  ;
+     int  N=5000,  no_dims = 2000  ;
 
      double *data = (double*) calloc(no_dims * N, sizeof(double));
      for(int ii=0; ii<no_dims *N; ii++) {

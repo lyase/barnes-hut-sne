@@ -877,12 +877,12 @@ bool TSNE::load_data(double** data, int* n, int* d, double* theta, double* perpl
 }
 
 // Function that saves map to a t-SNE file
-void TSNE::save_data(double* data, int* landmarks, double* costs, int n, int d)
+void TSNE::save_data(const char * filename ,double* data, int* landmarks, double* costs, int n, int d)
 {
 
      // Open file, write first 2 integers and then the data
      FILE *h;
-     if((h = fopen("result.dat", "w+b")) == NULL) {
+     if((h = fopen(filename, "w+b")) == NULL) {
           printf("Error: could not open data file.\n");
           return;
      }
@@ -900,7 +900,7 @@ void TSNE::save_data(double* data, int* landmarks, double* costs, int n, int d)
 int main()
 {
 
-     // Define some variables
+     // Define some variables 2= dimension for lower space projection ?
      int origN, N, D, no_dims = 2, *landmarks;
      double perc_landmarks;
      double perplexity, theta, *data;
@@ -928,7 +928,7 @@ int main()
           tsne->run(data, N, D, Y, no_dims, perplexity, theta);
 
           // Save the results
-          tsne->save_data(Y, landmarks, costs, N, no_dims);
+          tsne->save_data("result.dat",Y, landmarks, costs, N, no_dims);
 
           // Clean up the memory
           free(data);
