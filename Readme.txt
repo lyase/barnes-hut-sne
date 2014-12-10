@@ -25,4 +25,6 @@ You are free to use, modify, or redistribute this software in any way you want, 
 CONTACT
 If you encounter problems with the implementations or have questions about Barnes-Hut-SNE, make sure you read the paper and the online FAQ first! If your question is not answered afterwards, feel free to send me an email at: lvdmaaten@gmail.com
 
- 
+build with cmake
+./makedata=> will create data.dat
+./bh_tsne=> reads data.dat => creates result.dat

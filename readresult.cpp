@@ -26,13 +26,7 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
 #include "tsne.h"
 #include <stdio.h>      /* printf, scanf, NULL */
 #include <stdlib.h>     /* calloc, exit, free */
-
-extern "C" {
 #include <cblas.h>
-}
-
-
-using namespace std;
 
 void _save_data(double* data, int n, int d)
 {
@@ -48,10 +42,26 @@ void _save_data(double* data, int n, int d)
      fclose(h);
      printf("Wrote the %i x %i data matrix successfully!\n", n, d);
 }
+void _read_results(double* data, int n, int d)
+{
+     // Open file, write first 2 integers number of records number of dim of each record and then the data
+     FILE *h;
+     if((h = fopen("result.dat", "w+b")) == NULL) {
+          printf("Error: could not open data file.\n");
+          return;
+     }
+
+     if(tsne->load_data(&data, &origN, &D, &theta, &perplexity)) {
+     fwrite(&n, sizeof(int), 1, h);//write number of records
+     fwrite(&d, sizeof(int), 1, h);// write number of dimmension
+     fwrite(data, sizeof(double), n * d, h);
+     fclose(h);
+     printf("Wrote the %i x %i data matrix successfully!\n", n, d);
+}
 int main()
 {
      // Define some variables
-     int  N=500,  no_dims = 2000  ;
+     int  N=5000,  no_dims = 2000  ;
 
      double *data = (double*) calloc(no_dims * N, sizeof(double));
      for(int ii=0; ii<no_dims *N; ii++) {
