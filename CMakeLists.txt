@@ -1,3 +1,4 @@
+#    add_definitions(-std=c++11 -DHAVE_CPP11)
 project(fortranc Fortran C)
 cmake_minimum_required(VERSION 2.8)
 find_package( BLAS REQUIRED )
@@ -16,7 +17,7 @@ project ("hello world in c++")      # http://www.cmake.org/cmake/help/cmake-2-8-
 #
 # This tells cmake that we want to create an executable called 'hello' and the source files are just 'main.cpp'
 #add_executable(hello  quadtree.cpp tsne.cpp makedata.cpp )
-add_executable(bh_tsne  quadtree.cpp tsne.cpp  )
+add_executable(bh_tsne  quadtree.cpp tsne.cpp vptree.h )
 TARGET_LINK_LIBRARIES(bh_tsne  blas  ${blas} ${BLAS_LIBRARIES})
 project(makedata )
 add_executable(makedata makedata.cpp  )

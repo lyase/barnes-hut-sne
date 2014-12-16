@@ -1,7 +1,11 @@
 /** \file  makedata.cpp
 *small app to create t-sne data files
 compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -lblas
-
+*idea make few regularly placed balls in cube[0,1]dim 20.
+*generate random data in each of these balls.
+*run bh_tsne
+*plot the reults in 2 dim without labels
+*add labels see it is helps
 *\n
 *then run with
 *\code  ./test \endcode
@@ -27,6 +31,8 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
 #include <stdio.h>      /* printf, scanf, NULL */
 #include <stdlib.h>     /* calloc, exit, free */
 
+
+
 extern "C" {
 #include <cblas.h>
 }
@@ -48,11 +54,30 @@ void _save_data(double* data, int n, int d)
      fclose(h);
      printf("Wrote the %i x %i data matrix successfully!\n", n, d);
 }
+int random_number(int min_num, int max_num)
+ {
+     int result=0,low_num=0,hi_num=0;
+     if(min_num<max_num)
+     {
+         low_num=min_num;
+         hi_num=max_num+1; // this is done to include max_num in output.
+     }else{
+         low_num=max_num+1;// this is done to include max_num in output.
+         hi_num=min_num;
+     }
+     srand(time(NULL));
+     result = (rand()%(hi_num-low_num))+low_num;
+     return result;
+ }
+
 int main()
 {
      // Define some variables
      int  N=500,  no_dims = 2000  ;
-
+     //Random numbers
+     srand(time(NULL));
+     int r = rand();
+     int c1= random_number(1,10);
      double *data = (double*) calloc(no_dims * N, sizeof(double));
      for(int ii=0; ii<no_dims *N; ii++) {
           data[ii]=ii;
