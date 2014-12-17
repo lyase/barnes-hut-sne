@@ -55,42 +55,89 @@ void _save_data(double* data, int n, int d)
      printf("Wrote the %i x %i data matrix successfully!\n", n, d);
 }
 int random_number(int min_num, int max_num)
- {
+{
      int result=0,low_num=0,hi_num=0;
-     if(min_num<max_num)
-     {
-         low_num=min_num;
-         hi_num=max_num+1; // this is done to include max_num in output.
-     }else{
-         low_num=max_num+1;// this is done to include max_num in output.
-         hi_num=min_num;
+     if(min_num<max_num) {
+          low_num=min_num;
+          hi_num=max_num+1; // this is done to include max_num in output.
+     } else {
+          low_num=max_num+1;// this is done to include max_num in output.
+          hi_num=min_num;
      }
      srand(time(NULL));
      result = (rand()%(hi_num-low_num))+low_num;
      return result;
- }
+}
+double vectorNorm(double* vector,int no_dims)
+{
+     double norm=0.0;
+     for(int dn=0; dn<no_dims ; dn++) {
+          norm=norm+ vector[dn]* vector[dn];// ramdom number [0,1]
+     }
+     return norm;
+}
+void normalizeVector( double * vector, double dist, int no_dims )
+{
+     double norm=0.0;
+     norm=vectorNorm(vector,no_dims);
+     for(int dn=0; dn<no_dims ; dn++) {
 
+          vector[dn]= vector[dn]*dist / sqrt(norm);// ramdom number [0,1]
+     }
+}
 int main()
 {
      // Define some variables
-     int  N=500,  no_dims = 2000  ;
+     int  no_pointinball=5000,  no_dims = 20, no_balls = 100;
+     double *data = (double*) calloc(no_balls*no_pointinball * no_dims, sizeof(double));
+
      //Random numbers
      srand(time(NULL));
      int r = rand();
-     int c1= random_number(1,10);
-     double *data = (double*) calloc(no_dims * N, sizeof(double));
-     for(int ii=0; ii<no_dims *N; ii++) {
-          data[ii]=ii;
+     int dist= random_number(1,10)/10;// ramdom number [0,1]
+     for(int bn=0; bn<no_balls ; bn++) {
+          // generating the center of miniball in dim=20.
+          int dist= random_number(1,10000)/10000;// ramdom number [0,1]
+          double* ballcenter = (double*) calloc(no_dims , sizeof(double));
+          double norm=0.0;
+
+          for(int dn=0; dn<no_dims ; dn++) {
+
+               ballcenter[dn]= random_number(1,10000)/10000;// ramdom number [0,1]
+          }
+          // normilze vector to  dist
+          normalizeVector(ballcenter,dist,no_dims);
+          for(int pointnumber=0; pointnumber<no_pointinball; pointnumber++) {
+               int pointdist= random_number(1,10000)/10000;// ramdom number [0,1]
+               double* inballpointdirection = (double*) calloc(no_dims , sizeof(double));
+
+
+               for(int dn=0; dn<no_dims ; dn++) {
+                    inballpointdirection[dn]= random_number(1,10000)/10000;// ramdom number [0,1]
+               }
+               normalizeVector( inballpointdirection,pointdist,no_dims);
+               for(int dn=0; dn<no_dims ; dn++) {
+                    data[pointnumber+bn*no_pointinball+dn]=inballpointdirection[dn]+ballcenter[dn];// ramdom number [0,1]
+                    //           data[pointnumber+bn*no_pointinball+dn]=pointnumber+bn*no_pointinball+dn;// static data
+
+               }
+               free(inballpointdirection);
+          }
+          free(ballcenter);
+          // generate ball arround center with good number of points
+          //put points in data
+
      }
 //for loop
      TSNE* tsne = new TSNE();
 
      // save  the parameters and the dataset
-     _save_data(data,N,no_dims);
+     _save_data(data,no_balls*no_pointinball,no_dims);
 //not easy to use     tsne->save_data(data, landmarks, costs, N, no_dims);
 //ave_data(double*, int*, double*, int, int)
 
 // to read 	if(tsne->save_data(&data, &origN, &D, &theta, &perplexity)) {
 //return 0;}
      delete(tsne);
+     free(data);
 }
