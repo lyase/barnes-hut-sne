@@ -52,30 +52,29 @@ void _read_results(double* data, int n, int d)
      }
 
      if(tsne->load_data(&data, &origN, &D, &theta, &perplexity)) {
-     fwrite(&n, sizeof(int), 1, h);//write number of records
-     fwrite(&d, sizeof(int), 1, h);// write number of dimmension
-     fwrite(data, sizeof(double), n * d, h);
-     fclose(h);
-     printf("Wrote the %i x %i data matrix successfully!\n", n, d);
-}
-int main()
-{
-     // Define some variables
-     int  N=5000,  no_dims = 2000  ;
-
-     double *data = (double*) calloc(no_dims * N, sizeof(double));
-     for(int ii=0; ii<no_dims *N; ii++) {
-          data[ii]=ii;
+          fwrite(&n, sizeof(int), 1, h);//write number of records
+          fwrite(&d, sizeof(int), 1, h);// write number of dimmension
+          fwrite(data, sizeof(double), n * d, h);
+          fclose(h);
+          printf("Wrote the %i x %i data matrix successfully!\n", n, d);
      }
-//for loop
-     TSNE* tsne = new TSNE();
+     int main() {
+          // Define some variables
+          int  N=5000,  no_dims = 2000  ;
 
-     // save  the parameters and the dataset
-     _save_data(data,N,no_dims);
+          double *data = (double*) calloc(no_dims * N, sizeof(double));
+          for(int ii=0; ii<no_dims *N; ii++) {
+               data[ii]=ii;
+          }
+//for loop
+          TSNE* tsne = new TSNE();
+
+          // save  the parameters and the dataset
+          _save_data(data,N,no_dims);
 //not easy to use     tsne->save_data(data, landmarks, costs, N, no_dims);
 //ave_data(double*, int*, double*, int, int)
 
 // to read 	if(tsne->save_data(&data, &origN, &D, &theta, &perplexity)) {
 //return 0;}
-     delete(tsne);
-}
+          delete(tsne);
+     }
