@@ -2,6 +2,9 @@
 project(fortranc Fortran C)
 cmake_minimum_required(VERSION 2.8)
 find_package( BLAS REQUIRED )
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
+
 #find_library(blas NAMES )
 # This is the cmake file. It describes how to build our app
 # The documentation for how to build these can be found here:
@@ -22,3 +25,10 @@ TARGET_LINK_LIBRARIES(bh_tsne  blas  ${blas} ${BLAS_LIBRARIES})
 project(makedata )
 add_executable(makedata makedata.cpp  )
 TARGET_LINK_LIBRARIES(makedata blas  ${blas} ${BLAS_LIBRARIES})
+add_executable(ContourWidget MACOSX_BUNDLE ContourWidget)
+
+if(VTK_LIBRARIES)
+  target_link_libraries(ContourWidget ${VTK_LIBRARIES})
+else()
+  target_link_libraries(ContourWidget vtkHybrid vtkWidgets)
+endif()
