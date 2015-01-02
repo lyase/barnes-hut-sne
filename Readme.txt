@@ -25,6 +25,13 @@ You are free to use, modify, or redistribute this software in any way you want, 
 CONTACT
 If you encounter problems with the implementations or have questions about Barnes-Hut-SNE, make sure you read the paper and the online FAQ first! If your question is not answered afterwards, feel free to send me an email at: lvdmaaten@gmail.com
 
-build with cmake
+USAGE OF BRANCH   https://github.com/lyase/barnes-hut-sne.git
+build bh_tsne with cmake
+in source directory run:
+rm -rvf build/ ; mkdir build ; cd build/ ; cmake .. ; make ;  cd ..
+
+NOW create data.dat with balls in dim 20;
+cd build ./makedata ; cd ..
 ./makedata=> will create data.dat
-./bh_tsne=> reads data.dat => creates result.dat
+try bh_tsne on data.dat => reads data.dat => creates result.dat
+cd build; ./bh_tsne
