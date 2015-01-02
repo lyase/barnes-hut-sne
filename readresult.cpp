@@ -15,66 +15,36 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
  *
  * =====================================================================================
  */
+#include<iostream>
 #include <math.h>
 #include <float.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <cstring>
 #include <time.h>
-#include "quadtree.h"
-#include "vptree.h"
-#include "tsne.h"
+#include "tsnelib/quadtree.h"
+#include "tsnelib/vptree.h"
+#include "tsnelib/tsne.h"
 #include <stdio.h>      /* printf, scanf, NULL */
 #include <stdlib.h>     /* calloc, exit, free */
 #include <cblas.h>
 
-void _save_data(double* data, int n, int d)
+int main()
 {
-     // Open file, write first 2 integers number of records number of dim of each record and then the data
-     FILE *h;
-     if((h = fopen("data.dat", "w+b")) == NULL) {
-          printf("Error: could not open data file.\n");
-          return;
-     }
-     fwrite(&n, sizeof(int), 1, h);//write number of records
-     fwrite(&d, sizeof(int), 1, h);// write number of dimmension
-     fwrite(data, sizeof(double), n * d, h);
-     fclose(h);
-     printf("Wrote the %i x %i data matrix successfully!\n", n, d);
-}
-void _read_results(double* data, int n, int d)
-{
-     // Open file, write first 2 integers number of records number of dim of each record and then the data
-     FILE *h;
-     if((h = fopen("result.dat", "w+b")) == NULL) {
-          printf("Error: could not open data file.\n");
-          return;
-     }
+     // Define some variables 2= dimension for lower space projection ?
+     int origN, N, D, no_dims = 2, *landmarks;
+     double perc_landmarks;
+     double perplexity, theta, *data;
 
+     TSNE* tsne = new TSNE();
+
+     // Read the parameters and the dataset
      if(tsne->load_data(&data, &origN, &D, &theta, &perplexity)) {
-          fwrite(&n, sizeof(int), 1, h);//write number of records
-          fwrite(&d, sizeof(int), 1, h);// write number of dimmension
-          fwrite(data, sizeof(double), n * d, h);
-          fclose(h);
-          printf("Wrote the %i x %i data matrix successfully!\n", n, d);
+          std::cout<<"done reading dataset\n"<<"got "<<origN<<"records\n";
      }
-     int main() {
-          // Define some variables
-          int  N=5000,  no_dims = 2000  ;
 
-          double *data = (double*) calloc(no_dims * N, sizeof(double));
-          for(int ii=0; ii<no_dims *N; ii++) {
-               data[ii]=ii;
-          }
-//for loop
-          TSNE* tsne = new TSNE();
+     delete(tsne);
+     free(data);
 
-          // save  the parameters and the dataset
-          _save_data(data,N,no_dims);
-//not easy to use     tsne->save_data(data, landmarks, costs, N, no_dims);
-//ave_data(double*, int*, double*, int, int)
-
-// to read 	if(tsne->save_data(&data, &origN, &D, &theta, &perplexity)) {
-//return 0;}
-          delete(tsne);
-     }
+     return 0;
+}

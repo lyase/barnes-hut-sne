@@ -25,9 +25,9 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
 #include <stdio.h>
 #include <cstring>
 #include <time.h>
-#include "quadtree.h"
-#include "vptree.h"
-#include "tsne.h"
+#include "tsnelib/quadtree.h"
+#include "tsnelib/vptree.h"
+#include "tsnelib/tsne.h"
 #include <stdio.h>      /* printf, scanf, NULL */
 #include <stdlib.h>     /* calloc, exit, free */
 
