@@ -1,3 +1,6 @@
+
+#ifndef TSNE_H
+#define TSNE_H
 /*
  *  tsne.h
  *  Header file for t-SNE.
@@ -6,10 +9,6 @@
  *  Copyright 2012, Delft University of Technology. All rights reserved.
  *
  */
-
-
-#ifndef TSNE_H
-#define TSNE_H
 
 
 static inline double sign(double x)
@@ -39,6 +38,15 @@ private:
      void computeSquaredEuclideanDistance(double* X, int N, int D, double* DD);
      double randn();
 };
+/* the following Math  class is used to test the python wrapper work for basic pointer manipulation*/
+class Math {
+public:
+     Math();
+     int pi() const;
+     void pi(int pi);
+private:
+     int _pi;
+};
+int  fact(int n);
 
 #endif
-

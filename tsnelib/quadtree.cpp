@@ -365,7 +365,7 @@ void QuadTree::computeEdgeForces(int* row_P, int* col_P, double* val_P, int N, d
 
 
 // Print out tree
-void QuadTree::print()
+void QuadTree::QuadTreeprint()
 {
      if(cum_size == 0) {
           printf("Empty node\n");
@@ -385,10 +385,10 @@ void QuadTree::print()
           printf("Intersection node with center-of-mass = [");
           for(int d = 0; d < QT_NO_DIMS; d++) printf("%f, ", center_of_mass[d]);
           printf("]; children are:\n");
-          northEast->print();
-          northWest->print();
-          southEast->print();
-          southWest->print();
+          northEast->QuadTreeprint();
+          northWest->QuadTreeprint();
+          southEast->QuadTreeprint();
+          southWest->QuadTreeprint();
      }
 }
 

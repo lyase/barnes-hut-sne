@@ -74,7 +74,7 @@ public:
      ~QuadTree();
      void setData(double* inp_data);
      QuadTree* getParent();
-     void construct(Cell boundary);
+//     void construct(Cell boundary);
      bool insert(int new_index);
      void subdivide();
      bool isCorrect();
@@ -83,7 +83,7 @@ public:
      int getDepth();
      void computeNonEdgeForces(int point_index, double theta, double neg_f[], double* sum_Q);
      void computeEdgeForces(int* row_P, int* col_P, double* val_P, int N, double* pos_f);
-     void print();
+     void QuadTreeprint();
 
 private:
      void init(QuadTree* inp_parent, double* inp_data, double inp_x, double inp_y, double inp_hw, double inp_hh);

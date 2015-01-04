@@ -897,3 +897,17 @@ void TSNE::save_data(const char * filename ,double* data, int* landmarks, double
 
 
 // Function that runs the Barnes-Hut implementation of t-SNE
+Math::Math() {}
+int Math::pi() const
+{
+     return this->_pi;
+}
+void Math::pi(int pi)
+{
+     this->_pi = pi;
+}
+int  fact(int n)
+{
+     if (n <= 1) return 1;
+     else return n*fact(n-1);
+}
