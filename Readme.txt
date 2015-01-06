@@ -27,10 +27,14 @@ If you encounter problems with the implementations or have questions about Barne
 
 USAGE OF BRANCH   https://github.com/lyase/barnes-hut-sne.git
 build bh_tsne with cmake
-in source directory run:
-rm -rvf build/ ; mkdir build ; cd build/ ; cmake .. ; make ;  cd ..
+install required build dependency tested for ubuntu 12.10 & 14.04 
+sudo apt-get install git cmake build-essential gfortran libatlas-dev libvtk6-dev swig python-dev
+cd /tmp; 
+git clone https://github.com/lyase/barnes-hut-sne.git
+cd barnes-hut-sne/
+rm -rvf build ; mkdir build ; cd build ;  cmake .. ; make ; make test ; cd ..
 
-NOW create data.dat with balls in dim 20;
+NOW create data.dat with points  in dim 20;
 cd build ./makedata ; cd ..
 ./makedata=> will create data.dat
 try bh_tsne on data.dat => reads data.dat => creates result.dat

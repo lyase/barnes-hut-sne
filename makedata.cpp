@@ -1,7 +1,7 @@
 /** \file  makedata.cpp
 *small app to create t-sne data files
 compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -lblas
-*idea make few regularly placed balls in cube[0,1]dim 20.
+*idea make few random points no_pointinball in random unit ball placed in  in cube[0,1]dim 20.
 *generate random data in each of these balls.
 *run bh_tsne
 *plot the reults in 2 dim without labels
