@@ -1,5 +1,11 @@
 set(CMAKE_VERBOSE_MAKEFILE ON)
-#    add_definitions(-std=c++11 -DHAVE_CPP11)
+## Compiler flags
+#add_definitions(-std=c++11 -DHAVE_CPP11)//vtk ubuntu14.04 is not working
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-O3")        ## Optimize
+    set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
+endif()
 project(fortranc Fortran C)
 cmake_minimum_required(VERSION 2.8)
 find_package( BLAS REQUIRED )
@@ -22,9 +28,6 @@ project ("hello world in c++")      # http://www.cmake.org/cmake/help/cmake-2-8-
 # This tells cmake that we want to create an executable called 'hello' and the source files are just 'main.cpp'
 #add_executable(hello  quadtree.cpp tsne.cpp makedata.cpp )
 
-project(makedata )
-add_executable(makedata makedata.cpp  )
-TARGET_LINK_LIBRARIES(makedata blas  ${blas} ${BLAS_LIBRARIES} tsnelib)
 
 project(readresults )
 add_executable(readresults readresult.cpp  )
@@ -61,3 +64,10 @@ project(tests)
 file(COPY  testtsne.py DESTINATION .)
 find_package(PythonInterp REQUIRED)
 add_test(NAME testingPythonWrapper COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/testtsne.py)
+project(makedata )
+add_executable(makedata makedata.cpp  )
+TARGET_LINK_LIBRARIES(makedata blas  ${blas} ${BLAS_LIBRARIES} tsnelib)
+project(checkamadillo)
+
+add_executable(checkamadillo armadilloexample.cpp  )
+TARGET_LINK_LIBRARIES(checkamadillo blas  ${blas} ${BLAS_LIBRARIES} tsnelib armadillo)

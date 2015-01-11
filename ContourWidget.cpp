@@ -1,90 +1,86 @@
+#include <vtkVersion.h>
 #include <vtkSmartPointer.h>
-#include <vtkProperty.h>
-#include <vtkContourWidget.h>
-#include <vtkOrientedGlyphContourRepresentation.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkCommand.h>
-#include <vtkDebugLeaks.h>
-#include <vtkCamera.h>
-#include <vtkPlane.h>
-#include <vtkPolyData.h>
-#include <vtkCellArray.h>
 #include <vtkPoints.h>
-#include <vtkMath.h>
-#include <vtkWidgetEvent.h>
-#include <vtkWidgetEventTranslator.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkCellArray.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkVertexGlyphFilter.h>
+#include <vtkProperty.h>
 
-int main( int argc, char *argv[] )
+int main(int, char *[])
 {
-     // Create the RenderWindow, Renderer and both Actors
-     //
-     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-     vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-     renderWindow->AddRenderer(renderer);
+    vtkSmartPointer<vtkPoints> points =
+        vtkSmartPointer<vtkPoints>::New();
+    points->InsertNextPoint (0.0, 0.0, 0.0);
+    points->InsertNextPoint (1.0, 0.0, 0.0);
+    points->InsertNextPoint (0.0, 1.0, 0.0);
 
-     vtkSmartPointer<vtkRenderWindowInteractor> interactor =
-          vtkSmartPointer<vtkRenderWindowInteractor>::New();
-     interactor->SetRenderWindow(renderWindow);
+    vtkSmartPointer<vtkPolyData> pointsPolydata =
+        vtkSmartPointer<vtkPolyData>::New();
 
-     renderer->SetBackground(0.1, 0.2, 0.4);
-     renderWindow->SetSize(600, 600);
+    pointsPolydata->SetPoints(points);
 
-     vtkSmartPointer<vtkOrientedGlyphContourRepresentation> contourRep =
-          vtkSmartPointer<vtkOrientedGlyphContourRepresentation>::New();
-     contourRep->GetLinesProperty()->SetColor(1, 0, 0); //set color to red
+    vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter =
+        vtkSmartPointer<vtkVertexGlyphFilter>::New();
+#if VTK_MAJOR_VERSION <= 5
+    vertexFilter->SetInputConnection(pointsPolydata->GetProducerPort());
+#else
+    vertexFilter->SetInputData(pointsPolydata);
+#endif
+    vertexFilter->Update();
 
-     vtkSmartPointer<vtkContourWidget> contourWidget =
-          vtkSmartPointer<vtkContourWidget>::New();
-     contourWidget->SetInteractor(interactor);
-     contourWidget->SetRepresentation(contourRep);
-     contourWidget->On();
+    vtkSmartPointer<vtkPolyData> polydata =
+        vtkSmartPointer<vtkPolyData>::New();
+    polydata->ShallowCopy(vertexFilter->GetOutput());
 
-     for (int i = 0; i < argc; i++) {
-          if (strcmp("-Shift", argv[i]) == 0) {
-               contourWidget->GetEventTranslator()->RemoveTranslation(
-                    vtkCommand::LeftButtonPressEvent );
-               contourWidget->GetEventTranslator()->SetTranslation(
-                    vtkCommand::LeftButtonPressEvent,
-                    vtkWidgetEvent::Translate );
-          } else if (strcmp("-Scale", argv[i]) == 0) {
-               contourWidget->GetEventTranslator()->RemoveTranslation(
-                    vtkCommand::LeftButtonPressEvent );
-               contourWidget->GetEventTranslator()->SetTranslation(
-                    vtkCommand::LeftButtonPressEvent,
-                    vtkWidgetEvent::Scale );
-          }
-     }
+    // Setup colors
+    unsigned char red[3] = {255, 0, 0};
+    unsigned char green[3] = {0, 255, 0};
+    unsigned char blue[3] = {0, 0, 255};
 
+    vtkSmartPointer<vtkUnsignedCharArray> colors =
+        vtkSmartPointer<vtkUnsignedCharArray>::New();
+    colors->SetNumberOfComponents(3);
+    colors->SetName ("Colors");
+    colors->InsertNextTupleValue(red);
+    colors->InsertNextTupleValue(green);
+    colors->InsertNextTupleValue(blue);
 
-     vtkSmartPointer<vtkPolyData> pd = vtkSmartPointer<vtkPolyData>::New();
+    polydata->GetPointData()->SetScalars(colors);
 
-     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-     vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
-     vtkIdType* lineIndices = new vtkIdType[21];
-     for (int i = 0; i< 20; i++) {
-          const double angle = 2.0*vtkMath::Pi()*i/20.0;
-          points->InsertPoint(static_cast<vtkIdType>(i), 0.1*cos(angle),
-                              0.1*sin(angle), 0.0 );
-          lineIndices[i] = static_cast<vtkIdType>(i);
-     }
+    // Visualization
+    vtkSmartPointer<vtkPolyDataMapper> mapper =
+        vtkSmartPointer<vtkPolyDataMapper>::New();
+#if VTK_MAJOR_VERSION <= 5
+    mapper->SetInputConnection(polydata->GetProducerPort());
+#else
+    mapper->SetInputData(polydata);
+#endif
 
-     lineIndices[20] = 0;
-     lines->InsertNextCell(21,lineIndices);
-     delete [] lineIndices;
-     pd->SetPoints(points);
-     pd->SetLines(lines);
+    vtkSmartPointer<vtkActor> actor =
+        vtkSmartPointer<vtkActor>::New();
+    actor->SetMapper(mapper);
+    actor->GetProperty()->SetPointSize(5);
 
-     contourWidget->Initialize(pd);
-     contourWidget->Render();
-     renderer->ResetCamera();
-     renderWindow->Render();
+    vtkSmartPointer<vtkRenderer> renderer =
+        vtkSmartPointer<vtkRenderer>::New();
+    vtkSmartPointer<vtkRenderWindow> renderWindow =
+        vtkSmartPointer<vtkRenderWindow>::New();
+    renderWindow->AddRenderer(renderer);
+    vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+        vtkSmartPointer<vtkRenderWindowInteractor>::New();
+    renderWindowInteractor->SetRenderWindow(renderWindow);
 
-     interactor->Initialize();
-     interactor->Start();
+    renderer->AddActor(actor);
 
-     contourWidget->Off();
+    renderWindow->Render();
+    renderWindowInteractor->Start();
 
-     return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

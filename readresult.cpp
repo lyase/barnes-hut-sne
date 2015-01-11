@@ -31,20 +31,24 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
 
 int main()
 {
-     // Define some variables 2= dimension for lower space projection ?
-     int origN, N, D, no_dims = 2, *landmarks;
-     double perc_landmarks;
-     double perplexity, theta, *data;
+    // Define some variables 2= dimension for lower space projection ?
+    int origN, N, D, no_dims = 2, *landmarks;
+    double perc_landmarks;
+    double perplexity, theta, *data;
 
-     TSNE* tsne = new TSNE();
+    TSNE* tsne = new TSNE();
 
-     // Read the parameters and the dataset
-     if(tsne->load_data(&data, &origN, &D, &theta, &perplexity)) {
-          std::cout<<"done reading dataset\n"<<"got "<<origN<<"records\n";
-     }
+    // Read the parameters and the dataset
+    if(tsne->load_data("result.dat",&data, &origN, &D, &theta, &perplexity)) {
+        std::cout<<"done reading dataset\n"<<"got "<<origN<<"records\n";
+        std::cout<<"theta:"<<theta<<"\n";
+        std::cout<<"perplexity:"<<perplexity<<"\n";
+    }
+    for(int i=0; i<origN; i++) {
+        cout<<"data["<<i<<"]="<<data[i]<<endl;
+    }
+    delete(tsne);
+    free(data);
 
-     delete(tsne);
-     free(data);
-
-     return 0;
+    return 0;
 }
