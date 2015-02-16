@@ -1,6 +1,6 @@
 set(CMAKE_VERBOSE_MAKEFILE ON)
 ## Compiler flags
-#add_definitions(-std=c++11 -DHAVE_CPP11)//vtk ubuntu14.04 is not working
+#add_definitions(-std=c++11 -DHAVE_CPP11)//vtk ubuntu14.04 is notsupported with c++11 
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-O3")        ## Optimize

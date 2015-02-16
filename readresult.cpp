@@ -28,6 +28,7 @@ compiles with g++ -g -Wall makedata.cpp -o makedata -O3 -I./CBLAS/include -L./ -
 #include <stdio.h>      /* printf, scanf, NULL */
 #include <stdlib.h>     /* calloc, exit, free */
 #include <cblas.h>
+#include <iomanip>      // std::setprecision
 
 int main()
 {
@@ -39,13 +40,13 @@ int main()
     TSNE* tsne = new TSNE();
 
     // Read the parameters and the dataset
-    if(tsne->load_data("result.dat",&data, &origN, &D, &theta, &perplexity)) {
+    if(tsne->load_data("data.dat",&data, &origN, &D, &theta, &perplexity)) {
         std::cout<<"done reading dataset\n"<<"got "<<origN<<"records\n";
         std::cout<<"theta:"<<theta<<"\n";
         std::cout<<"perplexity:"<<perplexity<<"\n";
     }
     for(int i=0; i<origN; i++) {
-        cout<<"data["<<i<<"]="<<data[i]<<endl;
+        cout<<"data["<<i<<"]="<<std::fixed<<setprecision(5)<<data[i]<<endl;
     }
     delete(tsne);
     free(data);

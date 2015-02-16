@@ -16,18 +16,14 @@
 #include "quadtree.h"
 #include "vptree.h"
 #include "tsne.h"
-
 extern "C" {
 #include <cblas.h>
 }
-
-
 using namespace std;
 
 // Perform t-SNE
 void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta)
 {
-
     // Determine whether we are using an exact algorithm
     if(N - 1 < 3 * perplexity) {
         printf("Perplexity too large for the number of data points!\n");

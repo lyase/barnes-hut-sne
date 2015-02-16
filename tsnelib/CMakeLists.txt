@@ -3,4 +3,4 @@ find_package( BLAS REQUIRED )
 project ("tsnelib") 
 
 add_library(tsnelib  vptree.h quadtree.h tsne.cpp quadtree.cpp  vptree.cpp)
-target_link_libraries(tsnelib blas  ${blas} ${BLAS_LIBRARIES})
+target_link_libraries(tsnelib blas  ${blas} ${BLAS_LIBRARIES} blas  ${blas} ${BLAS_LIBRARIES} tsnelib armadillo)
