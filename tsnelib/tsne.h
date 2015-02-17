@@ -1,6 +1,24 @@
 
 #ifndef TSNE_H
 #define TSNE_H
+/* Cmake will define ${LIBRARY_NAME}_EXPORTS on Windows when it
+configures to build a shared library. If you are going to use
+another build system on windows or create the visual studio
+projects by hand you need to define ${LIBRARY_NAME}_EXPORTS when
+building a DLL on windows.
+*/
+// We are using the Visual Studio Compiler and building Shared libraries
+
+#if defined (_WIN32)
+    #if defined(examplelib_EXPORTS)
+        #define DLLEXPORT __declspec(dllexport)
+    #else
+        #define DLLEXPORT __declspec(dllimport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 /*
  *  tsne.h
  *  Header file for t-SNE.
@@ -17,7 +35,7 @@ static inline double sign(double x)
 }
 
 
-class TSNE {
+class DLLEXPORT TSNE {
 public:
     void run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta);
     bool load_data(const char * filename,double** data, int* n, int* d, double* theta, double* perplexity);
@@ -39,7 +57,7 @@ private:
     double randn();
 };
 /* the following Math  class is used to test the python wrapper work for basic pointer manipulation*/
-class Math {
+class DLLEXPORT Math {
 public:
     Math();
     int pi() const;
@@ -47,6 +65,6 @@ public:
 private:
     int _pi;
 };
-int  fact(int n);
+int DLLEXPORT fact(int n);
 
 #endif
