@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <algorithm>
-#include <vector>
-#include <stdio.h>
-#include <queue>
-#include <limits>
-#include <iostream>
-#include <cfloat>
-#include <limits>
+
 #include "vptree.h"
 
 double euclidean_distance(const DataPoint &t1, const DataPoint &t2)

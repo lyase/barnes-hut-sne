@@ -10,15 +10,38 @@ building a DLL on windows.
 // We are using the Visual Studio Compiler and building Shared libraries
 
 #if defined (_WIN32)
-    #if defined(examplelib_EXPORTS)
-        #define DLLEXPORT __declspec(dllexport)
-    #else
-        #define DLLEXPORT __declspec(dllimport)
-    #endif
+#if defined(examplelib_EXPORTS)
+#define DLLEXPORT __declspec(dllexport)
 #else
-    #define DLLEXPORT
+#define DLLEXPORT __declspec(dllimport)
 #endif
-
+#else
+#define DLLEXPORT
+#endif
+#ifndef SWIG
+#include <math.h>
+#include <iostream>    // std::cout, std::fixed
+#include <iomanip>      // std::setprecision
+#include <stdlib.h>
+#include <cstring>
+#include <time.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <queue>
+#include <limits>
+#include <iostream>
+#include <cfloat>
+#include <limits>
+using namespace std;
+#include "quadtree.h"
+#include "vptree.h"
+extern "C" {
+#include <cblas.h>
+}
+#else
+#endif
 /*
  *  tsne.h
  *  Header file for t-SNE.

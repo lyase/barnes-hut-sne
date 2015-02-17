@@ -9,7 +9,7 @@
 
 #ifndef QUADTREE_H
 #define QUADTREE_H
-
+#include "tsne.h"
 using namespace std;
 
 static inline double min(double x, double y)

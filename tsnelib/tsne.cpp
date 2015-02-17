@@ -6,20 +6,10 @@
  *  Copyright 2012, Delft University of Technology. All rights reserved.
  *
  */
-
-#include <math.h>
-#include <float.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <cstring>
-#include <time.h>
-#include "quadtree.h"
-#include "vptree.h"
 #include "tsne.h"
-extern "C" {
-#include <cblas.h>
-}
-using namespace std;
+
+
+
 
 // Perform t-SNE
 void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta)

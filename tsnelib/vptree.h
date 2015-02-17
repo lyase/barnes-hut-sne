@@ -9,17 +9,9 @@
 
 #ifndef VPTREE_H
 #define VPTREE_H
-#include <stdlib.h>
-#include <algorithm>
-#include <vector>
-#include <stdio.h>
-#include <queue>
-#include <limits>
-#include <iostream>
-#include <cfloat>
-#include <limits>
 
 
+#include "tsne.h"
 
 class DataPoint {
     int _D;
@@ -87,7 +79,7 @@ public:
     }
 
     // Function to create a new VpTree from data
-    void create(const std::vector<T>& items) {
+    void create(const vector<T>& items) {
         delete _root;
         _items = items;
         _root = buildFromPoints(0, items.size());

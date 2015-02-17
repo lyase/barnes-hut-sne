@@ -6,16 +6,7 @@
  *  Copyright 2012, Delft University of Technology. All rights reserved.
  *
  */
-
-#include <math.h>
-#include <float.h>
-#include <cblas.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "quadtree.h"
-
-
-
 // Checks whether a point lies in a cell
 bool Cell::containsPoint(double point[])
 {
