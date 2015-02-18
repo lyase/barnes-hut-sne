@@ -29,7 +29,7 @@ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexit
     int max_iter = 1000, stop_lying_iter = 250, mom_switch_iter = 250;
     double momentum = .5, final_momentum = .8;
     double eta = 200.0;
-    mat A = randu<mat>(4,5); // test build random matrix 4 rows 5 cols
+    mat A = randu<mat>(4,5); // test build using armadillo random matrix 4 rows 5 cols
 
     // Allocate some memory
     double* dY    = (double*) malloc(N * no_dims * sizeof(double));
