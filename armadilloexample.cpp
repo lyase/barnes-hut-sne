@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     mat A = randu<mat>(4,5); //random matrix 4 rows 5 cols
     setZeroMean(A);
     mat Mean=mean(A);
-    cout<<" new Mean ="<<Mean<<endl;
+    cout<<" centered data new Mean ="<<Mean<<endl;
 
     mat B = randu<mat>(4,5);
 

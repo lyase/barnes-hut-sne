@@ -22,12 +22,14 @@ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexit
     printf("Using no_dims = %d, perplexity = %f, and theta = %f\n", no_dims, perplexity, theta);
     bool exact = (theta == .0) ? true : false;
 
+
     // Set learning parameters
     float total_time = .0;
     clock_t start, end;
     int max_iter = 1000, stop_lying_iter = 250, mom_switch_iter = 250;
     double momentum = .5, final_momentum = .8;
     double eta = 200.0;
+    mat A = randu<mat>(4,5); // test build random matrix 4 rows 5 cols
 
     // Allocate some memory
     double* dY    = (double*) malloc(N * no_dims * sizeof(double));
@@ -889,12 +891,12 @@ void TSNE::save_data(const char * filename ,double* data, int* landmarks, double
 
 
 // Function that runs the Barnes-Hut implementation of t-SNE
-Math::Math() {}
-int Math::pi() const
+Math4py::Math4py() {}
+int Math4py::pi() const
 {
     return this->_pi;
 }
-void Math::pi(int pi)
+void Math4py::pi(int pi)
 {
     this->_pi = pi;
 }

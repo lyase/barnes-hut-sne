@@ -1,6 +1,7 @@
 
 #ifndef TSNE_H
 #define TSNE_H
+
 /* Cmake will define ${LIBRARY_NAME}_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
@@ -34,9 +35,12 @@ building a DLL on windows.
 #include <iostream>
 #include <cfloat>
 #include <limits>
+#include <armadillo>
 using namespace std;
+using namespace arma;
 #include "quadtree.h"
 #include "vptree.h"
+
 extern "C" {
 #include <cblas.h>
 }
@@ -80,9 +84,9 @@ private:
     double randn();
 };
 /* the following Math  class is used to test the python wrapper work for basic pointer manipulation*/
-class DLLEXPORT Math {
+class DLLEXPORT Math4py {
 public:
-    Math();
+    Math4py();
     int pi() const;
     void pi(int pi);
 private:
